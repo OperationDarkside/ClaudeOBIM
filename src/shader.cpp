@@ -1,20 +1,41 @@
 #include "shader.hpp"
+#include <glad/glad.h>
 #include <fstream>
 #include <sstream>
 #include <iostream>
 
 Shader::Shader(const char* vertexSource, const char* fragmentSource) {
+    // Add validation to ensure we have a valid OpenGL context
+    if (!gladLoadGL) {
+        throw std::runtime_error("GLAD not initialized before creating shader");
+    }
+
     GLuint vertex = glCreateShader(GL_VERTEX_SHADER);
+    if (vertex == 0) {
+        throw std::runtime_error("Failed to create vertex shader");
+    }
+
     glShaderSource(vertex, 1, &vertexSource, NULL);
     glCompileShader(vertex);
     checkCompileErrors(vertex, "VERTEX");
 
     GLuint fragment = glCreateShader(GL_FRAGMENT_SHADER);
+    if (fragment == 0) {
+        glDeleteShader(vertex);
+        throw std::runtime_error("Failed to create fragment shader");
+    }
+
     glShaderSource(fragment, 1, &fragmentSource, NULL);
     glCompileShader(fragment);
     checkCompileErrors(fragment, "FRAGMENT");
 
     m_program = glCreateProgram();
+    if (m_program == 0) {
+        glDeleteShader(vertex);
+        glDeleteShader(fragment);
+        throw std::runtime_error("Failed to create shader program");
+    }
+
     glAttachShader(m_program, vertex);
     glAttachShader(m_program, fragment);
     glLinkProgram(m_program);

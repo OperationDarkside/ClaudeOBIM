@@ -109,7 +109,7 @@ int main(int argc, char* argv[]) {
             glClear(GL_COLOR_BUFFER_BIT);
 
             shader.use();
-            shader.setFloat("intensity", 1.2f); // Example effect parameter
+            shader.setFloat("intensity", 1.5f); // Example effect parameter
             inputTexture.bind(0);
             shader.setInt("inputTexture", 0);
 
@@ -122,7 +122,10 @@ int main(int argc, char* argv[]) {
                         GL_RGBA, GL_UNSIGNED_BYTE, buffer.data());
 
             fs::path outputFile = outputPath / entry.path().filename();
-            // Use stb_image_write to save the image (implementation needed)
+            // Save processed image
+            if (!Texture::saveImage(outputFile.string(), inputTexture.getWidth(), inputTexture.getHeight(), buffer)) {
+                std::cerr << "Failed to save image: " << outputFile << std::endl;
+            }
             
             glDeleteTextures(1, &outputTexture);
         }

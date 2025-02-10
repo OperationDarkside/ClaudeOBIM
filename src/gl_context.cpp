@@ -1,4 +1,5 @@
 #include "gl_context.hpp"
+#include <glad/glad.h>
 #include <stdexcept>
 
 GLContext::GLContext(int width, int height) {
@@ -15,6 +16,15 @@ GLContext::GLContext(int width, int height) {
     if (!m_window) {
         glfwTerminate();
         throw std::runtime_error("Failed to create GLFW window");
+    }
+
+    glfwMakeContextCurrent(m_window);
+
+    // Initialize GLAD after creating OpenGL context
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        glfwDestroyWindow(m_window);
+        glfwTerminate();
+        throw std::runtime_error("Failed to initialize GLAD");
     }
 }
 
