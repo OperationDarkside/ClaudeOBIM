@@ -37,7 +37,7 @@ This repository contains a C++ program designed for image manipulation through O
 The code was generated using the large language model (LLM) Claude Sonnet 3.5, and as such, no copyright is claimed for the codebase itself. This repository is intended purely for educational purposes, demonstrating how OpenGL shaders can manipulate images in C++.
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](https://opensource.org/licenses/MIT) file for details.
+This project is licensed under the Unlicense - see the LICENSE file for details.
 
 ---
 
